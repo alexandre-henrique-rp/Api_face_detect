@@ -61,6 +61,7 @@ export class AppController {
     }
 
     res.setHeader('Content-Type', image.extension || 'image/jpeg');
+    res.setHeader('Content-Disposition', `inline; filename="${image.originalName}"`);
     fs.createReadStream(image.path).pipe(res);
   }
 
@@ -73,6 +74,7 @@ export class AppController {
     }
 
     res.setHeader('Content-Type', doc.extension || 'application/octet-stream');
+    res.setHeader('Content-Disposition', `inline; filename="${doc.originalName}"`);
     fs.createReadStream(doc.path).pipe(res);
   }
 
