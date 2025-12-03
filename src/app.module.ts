@@ -5,12 +5,13 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { FaceRecognitionService } from './face-recognition.service';
 import { PrismaModule } from './prisma/prisma.module';
+import { AutomacaoModule } from './automacao/automacao.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
     isGlobal: true,
     envFilePath: '.env',
-  }), PrismaModule, AuthModule],
+  }), PrismaModule, AuthModule, AutomacaoModule],
   controllers: [AppController],
   providers: [AppService, FaceRecognitionService],
 })

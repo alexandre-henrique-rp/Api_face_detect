@@ -37,9 +37,9 @@ export class AppController {
     },
   })
   async postImage(@UploadedFiles() files: { foto?: Express.Multer.File[], documento?: Express.Multer.File[] }, @Req() req: Express.Request) {
-    console.log("🚀 ~ AppController ~ postImage ~ documento:", files.documento)
     return this.appService.postImage(files, req.user);
   }
+  
 
   @Post('validate/dosie')
   async validateImage(@Body() body: FaceCheckDto) {

@@ -114,7 +114,7 @@ export class AppService {
         const url = process.env.DISCORD_WEB_HOOK_URL
         if (url && url !== 'undefined') {
           const data = {
-            content: `Novo dosie criado: ${dosie.id}\nNecessita de validação humana\n\n🔗 [Acessar Dossiê](${process.env.FRONTEND_URL}/face_detection/${dosie.id})`,
+            content: `Novo dosie criado: ${dosie.id}\nNecessita de validação humana\n\n🔗 [Acessar Dossiê](${process.env.URL_PADRAO}/automacao/face_detection/${dosie.id})`, 
           };
           await fetch(url, {
             method: 'POST',

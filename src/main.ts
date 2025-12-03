@@ -12,22 +12,41 @@ async function bootstrap() {
     .setDescription(`
 # 📋 API Face Detect Interface - Documentação Completa
 
-## 🔐 Como Utilizar a API
+## 🔐 Autenticação e Cadastro
 
-### 1. **Obtenção da API Key**
-- **Contate o administrador** do sistema para solicitar seu cadastro
-- Forneça seus dados de parceiro (CNPJ, razão social, etc.)
-- O administrador criará seu usuário no sistema e fornecerá sua **API Key**
-- A API Key corresponde ao campo **id_polo** da tabela \`parceiro_usuarios\`
+### 1. **Cadastro**
+- O cadastro deve ser realizado junto à **Ar Interface**.
+- Solicite sua credencial para obter acesso à API.
 
-### 2. **Como Usar a API Key**
-- Adicione o header **x-api-key** em todas as requisições
-- Exemplo: \`x-api-key: 12345\`
-- Ou use o botão **"Authorize"** no Swagger UI (ícone de cadeado 🔒)
+### 2. **Autenticação**
+- Utilize o header **x-api-key** em todas as requisições.
+- Exemplo: \`x-api-key: SUACHAVE123\`
+- Ou use o botão **"Authorize"** no Swagger UI (ícone de cadeado 🔒).
 
-### 3. **Endpoints Disponíveis**
-- **POST /upload** - Criar nova solicitação
+## 🔄 Webhook e Integração
 
+Para receber as atualizações de status das análises, o cliente deve fornecer uma rota **POST** (webhook).
+
+### **Formato do Payload Enviado**
+A API enviará uma requisição POST para sua rota configurada com o seguinte corpo JSON:
+
+\`\`\`json
+{
+  "message": "Mensagem descritiva do resultado",
+  "data": {
+    "id": "uuid-do-processo",
+    "status": "PENDING | APPROVED | REJECTED",
+    "create": "2025-01-01T12:00:00.000Z"
+  }
+}
+\`\`\`
+
+### **Estados Possíveis**
+- **PENDING**: Em análise (pode requerer verificação humana).
+- **APPROVED**: Aprovado (Face compatível com Documento).
+- **REJECTED**: Rejeitado (Face não compatível, duplicidade ou risco detectado).
+
+---
 
 ### 8. **Contatos e Suporte**
 - **📞 Suporte e Administração:** 
