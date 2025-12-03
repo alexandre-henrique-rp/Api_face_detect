@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Image {
+  id           String   @id @default(uuid())
+  originalName String
+  name         String
+  size         BigInt
+  extension    String
+  path         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Características faciais biométricas para detecção de duplicidade
+  faceHash     String? // Hash único baseado nas características faciais
+
+  // Relacionamentos
+  dosies Dosie[] @relation("ImageToDosie")
+
+  // Índices
+  @@index([name])
+  @@index([extension])
+  @@index([createdAt])
+  @@index([faceHash])
+}
+
+model Document {
+  id             String   @id @default(uuid())
+  originalName   String
+  name           String
+  size           BigInt
+  extension      String
+  path           String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relacionamentos
+  dosies Dosie[] @relation("ImageToDosieAsDocument")
+
+  // Índices
+  @@index([name])
+  @@index([extension])
+  @@index([createdAt])
+}
+
+model Dosie {
+  id          String     @id @default(uuid())
+  imageId     String
+  documentId  String
+  status      StatusEnum @default(PENDING)
+  logs        String
+  processedBy String? // null, "IA" ou "HUMANO"
+  processedAt DateTime?
+  processedObs String?  // Observações do processamento
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  userId      String?
+
+  // Relacionamentos
+  image    Image    @relation("ImageToDosie", fields: [imageId], references: [id], onDelete: Cascade)
+  document Document @relation("ImageToDosieAsDocument", fields: [documentId], references: [id], onDelete: Cascade)
+  user     User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Constraint única para evitar duplicatas
+  @@unique([imageId, documentId])
+  // Índices
+  @@index([imageId])
+  @@index([documentId])
+  @@index([status])
+  @@index([processedBy])
+  @@index([createdAt])
+  @@index([userId])
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  api_key      String
+  rota_response String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relacionamentos
+  dosies Dosie[]
+}
+
+model user_adm {
+  id           String     @id @default(uuid())
+  name         String
+  email        String   @unique
+  password     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum StatusEnum {
+  PENDING
+  APPROVED
+  REJECTED
+}
