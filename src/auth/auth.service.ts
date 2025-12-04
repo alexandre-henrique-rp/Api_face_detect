@@ -47,6 +47,7 @@ export class AuthService {
           id: true,
           email: true,
           name: true,
+          api_key: true,
         },
       });
     } catch (error) {
