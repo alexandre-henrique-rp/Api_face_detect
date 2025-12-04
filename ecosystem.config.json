@@ -1,0 +1,10 @@
+{
+  "name": "api-face-detect",
+  "script": "yarn",
+  "args": "start:prod",
+  "autorestart": true,
+  "watch": false,
+  "output": "./logs/out.log",
+  "error": "./logs/error.log",
+  "log_date_format": "DD-MM-YYYY HH:mm:ss"
+}
