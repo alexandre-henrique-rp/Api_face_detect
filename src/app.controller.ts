@@ -1,12 +1,13 @@
 import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, Req, Res, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { ApiBadRequestResponse, ApiBody, ApiConsumes, ApiExcludeEndpoint, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiSecurity } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBody, ApiConsumes, ApiExcludeEndpoint, ApiExtraModels, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiSecurity } from '@nestjs/swagger';
 import { Response } from 'express';
 import * as fs from 'fs';
 import { AppService } from './app.service';
 import { AuthGuard } from './auth/auth.guard';
 import { FaceCheckDto } from './dto/face_check.dto';
 
+@ApiExtraModels(FaceCheckDto)
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) { }
