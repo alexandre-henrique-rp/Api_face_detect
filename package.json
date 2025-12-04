@@ -28,7 +28,7 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/cqrs": "^11.0.3",
     "@nestjs/platform-express": "^10.0.0",
-    "@nestjs/swagger": "^11.2.3",
+    "@nestjs/swagger": "^7.4.2",
     "@prisma/adapter-better-sqlite3": "^7.0.1",
     "@prisma/client": "^7.0.1",
     "@tensorflow/tfjs-node": "^4.22.0",
