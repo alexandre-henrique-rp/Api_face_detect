@@ -14,6 +14,7 @@ export class AppController {
   @Post('upload')
   @ApiSecurity('api_key')
   @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Enviar fotos e documento para processamento' })
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'foto', maxCount: 1 },
     { name: 'documento', maxCount: 1 },
@@ -106,6 +107,15 @@ export class AppController {
         "updatedAt": { type: 'string', format: 'date-time', description: 'Data de atualização' }
       },
     },
+    example: {
+      id: '123',
+      status: 'APPROVED',
+      imageId: 'img_456',
+      documentId: 'doc_789',
+      processedObs: 'Processamento concluído com sucesso',
+      createdAt: '2024-01-01T00:00:00.000Z',
+      updatedAt: '2024-01-01T00:00:00.000Z'
+    }
   })
   @ApiBadRequestResponse({
     description: 'Erro ao obter dados do dosie',
@@ -119,6 +129,7 @@ export class AppController {
   }
 
   @Get('view/foto/:id')
+  @ApiOperation({ summary: 'Visualizar foto por ID' })
   @ApiParam({ name: 'id', description: 'ID da foto a ser visualizada', required: true, type: String })
   @ApiOkResponse({
     description: 'Foto retornada com sucesso',
@@ -128,6 +139,16 @@ export class AppController {
           type: 'string',
           format: 'binary'
         }
+      }
+    },
+    example: {
+      "message": "Foto retornada com sucesso",
+      "data": {
+        "id": "foto_123",
+        "originalName": "foto.jpg",
+        "path": "/caminho/para/foto.jpg",
+        "extension": "jpg",
+        "size": 1024
       }
     }
   })
@@ -150,11 +171,30 @@ export class AppController {
   }
 
   @Get('view/documento/:id')
+  @ApiOperation({ summary: 'Visualizar documento por ID' })
   @ApiParam({ name: 'id', description: 'ID do documento a ser visualizado', required: true, type: String })
   @ApiOkResponse({
-    description: 'Foto retornada com sucesso',
+    description: 'Documento retornado com sucesso',
     content: {
+      'application/pdf': {
+        schema: {
+          type: 'string',
+          format: 'binary'
+        }
+      },
       'image/jpeg': {
+        schema: {
+          type: 'string',
+          format: 'binary'
+        }
+      },
+      'image/png': {
+        schema: {
+          type: 'string',
+          format: 'binary'
+        }
+      },
+      'application/octet-stream': {
         schema: {
           type: 'string',
           format: 'binary'
@@ -179,5 +219,4 @@ export class AppController {
     res.setHeader('Content-Disposition', `inline; filename="${doc.originalName}"`);
     fs.createReadStream(doc.path).pipe(res);
   }
-
 }
