@@ -1,7 +1,8 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { ApiExcludeController } from '@nestjs/swagger';
 import { AutomacaoService } from './automacao.service';
 
-
+@ApiExcludeController()
 @Controller('automacao')
 export class AutomacaoController {
   constructor(private readonly automacaoService: AutomacaoService) { }
